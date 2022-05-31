@@ -1,0 +1,38 @@
+I have setup a vyos router for my homelab in esxi with WAN, LAN-MGMT, LAN-Data and DMZ.
+For basic setup I followed this blog post https://blog.kroy.io/2020/12/07/vyos-from-scratch-bgp-announcements/
+This was very well written but I had a need for DMZ. What I mean is that I needed to block the DMZ from accessing my LAN-MGMT and LAN-Data.
+So the bellow are the configuration I did on vyos CLI additional to that above blog post.
+1)
+
+set firewall name LAN-DMZ default-action accept
+set firewall name LOCAL-DMZ default-action accept
+
+2) 
+
+Follow all the setupd meant for WAN and later do it again but change from WAN to DMZ.
+
+3) 
+
+Add my laptop/ or MGMT-Computer to access vyos and other resources behind vyos firewall
+
+set firewall name WAN-LAN rule 7 source address 10.x.x.x We can also but a range of IPs
+set firewall name WAN-LAN rule 7 state new enable
+set firewall name WAN-LAN rule 7 action accept
+
+set firewall name WAN-LOCAL rule 7 source address 10.x.x.x We can also but a range of IPs
+set firewall name WAN-LOCAL rule 7 state new enable
+set firewall name WAN-LOCAL rule 7 action accept
+
+4)
+
+set firewall name DMZ-WAN default-action accept
+set firewall name WAN-DMZ default-action accept
+
+5)
+
+set zone-policy zone DMZ from WAN firewall name WAN-DMZ
+set zone-policy zone WAN from DMZ firewall name DMZ-WAN
+
+
+Now with all of these above setting my LAN and LOCAL can access all the resources but DMZ can only ping to local network (which we can block by deleting the rule no. 20 in DMZ firewall).
+But the DMZ can't access the LAN and LOCAL resources for the safety reasons.
