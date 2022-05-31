@@ -5,6 +5,11 @@ set firewall name LAN-LOCAL default-action accept
 set firewall name LOCAL-WAN default-action accept
 set firewall name LOCAL-LAN default-action accept
 
+set firewall name LAN-DMZ default-action accept
+set firewall name LOCAL-DMZ default-action accept
+set firewall name DMZ-WAN default-action accept
+set firewall name WAN-DMZ default-action accept
+
 
 set firewall name WAN-LOCAL default-action drop
 set firewall name WAN-LOCAL rule 5 action accept
@@ -24,6 +29,15 @@ set firewall name WAN-LAN rule 20 protocol icmp
 set firewall name WAN-LAN rule 20 state new enable
 set firewall name WAN-LAN rule 20 action accept
 
+set firewall name WAN-LAN rule 7 source address 10.x.x.x
+set firewall name WAN-LAN rule 7 state new enable
+set firewall name WAN-LAN rule 7 action accept
+
+set firewall name WAN-LOCAL rule 7 source address 10.x.x.x
+set firewall name WAN-LOCAL rule 7 state new enable
+set firewall name WAN-LOCAL rule 7 action accept
+
+
 set zone-policy zone LAN default-action drop
 set zone-policy zone LAN from WAN firewall name WAN-LAN
 set zone-policy zone LAN from LOCAL firewall name LOCAL-LAN
@@ -38,5 +52,10 @@ set zone-policy zone WAN from LAN firewall name LAN-WAN
 set zone-policy zone WAN from LOCAL firewall name LOCAL-WAN
 set zone-policy zone WAN interface ethx
 set zone-policy zone WAN default-action drop
+
+set zone-policy zone DMZ from WAN firewall name WAN-DMZ
+set zone-policy zone WAN from DMZ firewall name DMZ-WAN
+set zone-policy zone DMZ interface ethx
+
 commit
 save
