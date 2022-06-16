@@ -1,4 +1,28 @@
 conf
+set interfaces ethernet eth0 address 10.0.0.2/24
+set interfaces ethernet eth0 description 'internet'
+set system host-name vyosrtr
+set service ssh
+
+set protocols static route 0.0.0.0/0 next-hop 10.0.0.1
+
+set interfaces ethernet eth1 address 172.16.1.254/24
+set interfaces ethernet eth1 description 'MGMT-LAN-Internet'
+set interfaces ethernet eth2 address 172.16.2.254/24
+set interfaces ethernet eth2 description 'Data-LAN-No-Internet'
+set interfaces ethernet eth3 address 172.16.255.254/24
+set interfaces ethernet eth3 description 'Isolated-NO-LAN'
+
+set nat source rule 10 outbound-interface eth0
+set nat source rule 10 source address 172.16.1.0/24
+set nat source rule 10 translation address masquerade
+
+set nat source rule 11 outbound-interface eth0
+set nat source rule 11 source address 172.16.255.0/24
+set nat source rule 11 translation address masquerade
+
+
+
 set firewall name LAN-WAN default-action accept
 set firewall name LAN-LOCAL default-action accept
 
@@ -7,6 +31,7 @@ set firewall name LOCAL-LAN default-action accept
 
 set firewall name LAN-DMZ default-action accept
 set firewall name LOCAL-DMZ default-action accept
+
 set firewall name DMZ-WAN default-action accept
 set firewall name WAN-DMZ default-action accept
 
@@ -29,11 +54,11 @@ set firewall name WAN-LAN rule 20 protocol icmp
 set firewall name WAN-LAN rule 20 state new enable
 set firewall name WAN-LAN rule 20 action accept
 
-set firewall name WAN-LAN rule 7 source address 10.x.x.x
+set firewall name WAN-LAN rule 7 source address 10.0.0.50
 set firewall name WAN-LAN rule 7 state new enable
 set firewall name WAN-LAN rule 7 action accept
 
-set firewall name WAN-LOCAL rule 7 source address 10.x.x.x
+set firewall name WAN-LOCAL rule 7 source address 10.0.0.50
 set firewall name WAN-LOCAL rule 7 state new enable
 set firewall name WAN-LOCAL rule 7 action accept
 
@@ -41,7 +66,7 @@ set firewall name WAN-LOCAL rule 7 action accept
 set zone-policy zone LAN default-action drop
 set zone-policy zone LAN from WAN firewall name WAN-LAN
 set zone-policy zone LAN from LOCAL firewall name LOCAL-LAN
-set zone-policy zone LAN interface ethx
+set zone-policy zone LAN interface eth1 eth2
 
 set zone-policy zone LOCAL local-zone
 set zone-policy zone LOCAL from LAN firewall name LAN-LOCAL
@@ -50,12 +75,12 @@ set zone-policy zone LOCAL default-action drop
 
 set zone-policy zone WAN from LAN firewall name LAN-WAN
 set zone-policy zone WAN from LOCAL firewall name LOCAL-WAN
-set zone-policy zone WAN interface ethx
+set zone-policy zone WAN interface eth0
 set zone-policy zone WAN default-action drop
 
 set zone-policy zone DMZ from WAN firewall name WAN-DMZ
 set zone-policy zone WAN from DMZ firewall name DMZ-WAN
-set zone-policy zone DMZ interface ethx
+set zone-policy zone DMZ interface eth3
 
 commit
 save
