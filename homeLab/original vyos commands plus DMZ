@@ -33,6 +33,8 @@ set firewall name LAN-DMZ default-action accept
 set firewall name LOCAL-DMZ default-action accept
 
 set firewall name DMZ-WAN default-action accept
+set firewall name DMZ-LAN default-action drop
+set firewall name DMZ-LOCAL default-action drop
 set firewall name WAN-DMZ default-action accept
 
 
