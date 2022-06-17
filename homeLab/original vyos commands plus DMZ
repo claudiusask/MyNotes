@@ -47,6 +47,8 @@ set firewall name WAN-LOCAL rule 20 protocol icmp
 set firewall name WAN-LOCAL rule 20 state new enable
 set firewall name WAN-LOCAL rule 20 action accept
 
+********** ---- DO EXACTLY the same 8 lines as above but for DMZ-LAN and DMZ-LOCAL ---- *********
+
 set firewall name WAN-LAN default-action drop
 set firewall name WAN-LAN rule 5 action accept
 set firewall name WAN-LAN rule 5 state established enable
