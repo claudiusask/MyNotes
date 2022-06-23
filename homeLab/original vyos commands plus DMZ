@@ -1,4 +1,7 @@
-conf
+#!/bin/vbash
+source /opt/vyatta/etc/functions/script-template
+configure
+
 set interfaces ethernet eth0 address 10.0.0.2/24
 set interfaces ethernet eth0 description 'internet'
 set system host-name vyosrtr
@@ -33,8 +36,6 @@ set firewall name LAN-DMZ default-action accept
 set firewall name LOCAL-DMZ default-action accept
 
 set firewall name DMZ-WAN default-action accept
-set firewall name DMZ-LAN default-action drop
-set firewall name DMZ-LOCAL default-action drop
 set firewall name WAN-DMZ default-action accept
 
 
@@ -46,8 +47,6 @@ set firewall name WAN-LOCAL rule 5 description "Allow EST/Related Traffic"
 set firewall name WAN-LOCAL rule 20 protocol icmp
 set firewall name WAN-LOCAL rule 20 state new enable
 set firewall name WAN-LOCAL rule 20 action accept
-
-********** ---- DO EXACTLY the same 8 lines as above but for DMZ-LAN and DMZ-LOCAL ---- *********
 
 set firewall name WAN-LAN default-action drop
 set firewall name WAN-LAN rule 5 action accept
@@ -66,12 +65,30 @@ set firewall name WAN-LOCAL rule 7 source address 10.0.0.50
 set firewall name WAN-LOCAL rule 7 state new enable
 set firewall name WAN-LOCAL rule 7 action accept
 
+set firewall name DMZ-LAN default-action drop
+set firewall name DMZ-LAN rule 5 action accept
+set firewall name DMZ-LAN rule 5 state established enable
+set firewall name DMZ-LAN rule 5 state related enable
+set firewall name DMZ-LAN rule 5 description "Allow EST/Related Traffic"
+set firewall name DMZ-LAN rule 20 protocol icmp
+set firewall name DMZ-LAN rule 20 state new enable
+set firewall name DMZ-LAN rule 20 action accept
+
+set firewall name DMZ-LOCAL default-action drop
+set firewall name DMZ-LOCAL rule 5 action accept
+set firewall name DMZ-LOCAL rule 5 state established enable
+set firewall name DMZ-LOCAL rule 5 state related enable
+set firewall name DMZ-LOCAL rule 5 description "Allow EST/Related Traffic"
+set firewall name DMZ-LOCAL rule 20 protocol icmp
+set firewall name DMZ-LOCAL rule 20 state new enable
+set firewall name DMZ-LOCAL rule 20 action accept
 
 set zone-policy zone LAN default-action drop
 set zone-policy zone LAN from WAN firewall name WAN-LAN
 set zone-policy zone LAN from LOCAL firewall name LOCAL-LAN
 set zone-policy zone LAN from DMZ firewall name DMZ-LAN
-set zone-policy zone LAN interface eth1 eth2
+set zone-policy zone LAN interface eth1
+set zone-policy zone LAN interface eth2
 
 set zone-policy zone LOCAL local-zone
 set zone-policy zone LOCAL from LAN firewall name LAN-LOCAL
