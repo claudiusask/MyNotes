@@ -83,29 +83,29 @@ set firewall name DMZ-LOCAL rule 20 protocol icmp
 set firewall name DMZ-LOCAL rule 20 state new enable
 set firewall name DMZ-LOCAL rule 20 action accept
 
-set zone-policy zone LAN default-action drop
-set zone-policy zone LAN from WAN firewall name WAN-LAN
-set zone-policy zone LAN from LOCAL firewall name LOCAL-LAN
-set zone-policy zone LAN from DMZ firewall name DMZ-LAN
-set zone-policy zone LAN interface eth1
-set zone-policy zone LAN interface eth2
+set firewall zone LAN default-action drop
+set firewall zone LAN from WAN firewall name WAN-LAN
+set firewall zone LAN from LOCAL firewall name LOCAL-LAN
+set firewall zone LAN from DMZ firewall name DMZ-LAN
+set firewall zone LAN interface eth1
+set firewall zone LAN interface eth2
 
-set zone-policy zone LOCAL local-zone
-set zone-policy zone LOCAL from LAN firewall name LAN-LOCAL
-set zone-policy zone LOCAL from WAN firewall name WAN-LOCAL
-set zone-policy zone LOCAL from DMZ firewall name DMZ-LOCAL
-set zone-policy zone LOCAL default-action drop
+set firewall zone LOCAL local-zone
+set firewall zone LOCAL from LAN firewall name LAN-LOCAL
+set firewall zone LOCAL from WAN firewall name WAN-LOCAL
+set firewall zone LOCAL from DMZ firewall name DMZ-LOCAL
+set firewall zone LOCAL default-action drop
 
-set zone-policy zone WAN from LAN firewall name LAN-WAN
-set zone-policy zone WAN from LOCAL firewall name LOCAL-WAN
-set zone-policy zone WAN interface eth0
-set zone-policy zone WAN default-action drop
+set firewall zone WAN from LAN firewall name LAN-WAN
+set firewall zone WAN from LOCAL firewall name LOCAL-WAN
+set firewall zone WAN interface eth0
+set firewall zone WAN default-action drop
 
-set zone-policy zone DMZ from WAN firewall name WAN-DMZ
-set zone-policy zone DMZ from LAN firewall name LAN-DMZ
-set zone-policy zone DMZ from LOCAL firewall name LOCAL-DMZ
-set zone-policy zone WAN from DMZ firewall name DMZ-WAN
-set zone-policy zone DMZ interface eth3
+set firewall zone DMZ from WAN firewall name WAN-DMZ
+set firewall zone DMZ from LAN firewall name LAN-DMZ
+set firewall zone DMZ from LOCAL firewall name LOCAL-DMZ
+set firewall zone WAN from DMZ firewall name DMZ-WAN
+set firewall zone DMZ interface eth3
 
 commit
 save
