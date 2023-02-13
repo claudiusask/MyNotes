@@ -107,5 +107,12 @@ set firewall zone DMZ from LOCAL firewall name LOCAL-DMZ
 set firewall zone WAN from DMZ firewall name DMZ-WAN
 set firewall zone DMZ interface eth3
 
+#
+# Drop all traffic from DMZ to my homeNetwork 192.168.x.x - This is a WAN connection for vYos DMZ network so I had to drop it with this below rules.
+#
+
+set firewall name DMZ-WAN rule 1 destination address 192.168.x.x-192.168.x.x
+set firewall name DMZ-WAN rule 1 action drop
+
 commit
 save
