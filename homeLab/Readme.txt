@@ -23,4 +23,4 @@ Appart from this normal config script, we should add DHCP & DNS sevrice for the 
   ##### How to add static mapping ip-addresses and mac-addresses
   ### below is example
   set service dhcp-server shared-network-name easy-to-rememb-name subnet 172.x.x.x/24 static-mapping host-name ip-address 172.x.x.4
-  set service dhcp-server shared-network-name easy-to-rememb-name subnet 172.x.x.x/24 static-mapping host-name mac-address xx:xx:xx:xx:
+  set service dhcp-server shared-network-name easy-to-rememb-name subnet 172.x.x.x/24 static-mapping host-name mac-address xx:xx:xx:xx
