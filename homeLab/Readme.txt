@@ -18,4 +18,9 @@ Appart from this normal config script, we should add DHCP & DNS sevrice for the 
   - set service dns forwarding allow-from 10.0.10.0/24        # only this subnet is allowed - possible to add multiple.
   
   
-  - Keep system name-server to the Bind9 server which is my main DNS in the infrastructure. 
+  - Keep system name-server to the Bind9 server which is my main DNS in the infrastructure.
+  
+  ##### How to add static mapping ip-addresses and mac-addresses
+  ### below is example
+  set service dhcp-server shared-network-name easy-to-rememb-name subnet 172.x.x.x/24 static-mapping host-name ip-address 172.x.x.4
+  set service dhcp-server shared-network-name easy-to-rememb-name subnet 172.x.x.x/24 static-mapping host-name mac-address x:x:x:x:
